@@ -14,18 +14,22 @@ bot.on('message', (message) => {
         return;
     }
 
+    if (message.author.id === process.env.COOKIE.toString()) {
+        message.react('🗿');
+    }
+
     if (message.content === "cookie pray") {
-        message.channel.send(':moyai:');
+        message.channel.send('🗿');
     }
 
     if (message.content === "cookie facts") {
         const facts = JSON.parse(fs.readFileSync('./data/stuff.json'));
 
-        message.channel.send(facts[Math.floor(Math.random() * facts.length - 1)].content);
+        message.channel.send(facts[Math.floor(Math.random() * facts.length)].content);
     }
 
     if (message.content.includes("cookie add-fact")) {
-        if (message.author.id === "629259816992505856") {
+        if (message.author.id === process.env.COOKIE) {
             const fact = message.content.split('').splice(16).join('');
             const facts = JSON.parse(fs.readFileSync('./data/stuff.json'));
     
