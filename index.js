@@ -22,6 +22,33 @@ bot.on('message', (message) => {
         message.channel.send('🗿');
     }
 
+    if (message.content === "cookie song") {
+        const songs = JSON.parse(fs.readFileSync('./data/songs.json'));
+
+        message.channel.send(songs[Math.floor(Math.random() * songs.length)].link);
+    }
+
+    if (message.content.includes("cookie add-song")) { 
+        if (message.author.id === process.env.COOKIE.toString()) {
+            const song = message.content.split('').splice(16).join('');
+            const songs = JSON.parse(fs.readFileSync('./data/songs.json'));
+    
+            songs.push({
+                link: song
+            });
+    
+            try {
+                fs.writeFileSync('./data/songs.json', JSON.stringify(songs));
+            } catch(err) {
+                message.channel.send("Failed to add song."); 
+            }
+
+            message.channel.send("Song added."); 
+        } else {
+            message.channel.send("Only cookie can add songs <:tea:856945220804804611>")
+        }
+    }
+
     if (message.content === "cookie facts") {
         const facts = JSON.parse(fs.readFileSync('./data/stuff.json'));
 
@@ -29,7 +56,7 @@ bot.on('message', (message) => {
     }
 
     if (message.content.includes("cookie add-fact")) {
-        if (message.author.id === process.env.COOKIE) {
+        if (message.author.id === process.env.COOKIE.toString()) {
             const fact = message.content.split('').splice(16).join('');
             const facts = JSON.parse(fs.readFileSync('./data/stuff.json'));
     
@@ -46,7 +73,7 @@ bot.on('message', (message) => {
 
             message.channel.send(`Fact "${fact}" added.`);   
         } else {
-            message.channel.send("Only cookie can add facts.");
+            message.channel.send("Only cookie can add facts <:tea:856945220804804611>");
         }
     }
 });
